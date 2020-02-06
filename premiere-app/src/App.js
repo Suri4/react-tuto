@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import './App.css';
 import Membre from './component/Membre';
+import Button from './component/Button';
 
 const famille = {
   membre1: {
@@ -24,19 +25,12 @@ const famille = {
 class App extends Component {
   state = {famille}
 
-  handleClick = () => {
+  handleClick = (addedYear) => {
     // 1- Je copie mon state pour avoir un objet famille qui reproduit mon state a l'état actuel
     const famille = { ... this.state.famille} 
 
     // 2- Je fais la modif sur mon state
-    famille.membre1.age += 1 
-    famille.membre2.age += 1 
-    famille.membre3.age += 1 
-    famille.membre4.age += 1 
-
-    for(let member of famille){
-      member.age += 1
-    }
+    famille.membre1.age += addedYear 
 
     // 3- J'update le state
     this.setState({famille}); 
@@ -49,13 +43,14 @@ class App extends Component {
       <Fragment>
         <div className='App'>
           <h1>{title}</h1>
+          <input type="text"/>
           <Membre age={famille.membre1.age} name={famille.membre1.nom} />
           <Membre age={famille.membre2.age} name={famille.membre2.nom}  />
           <Membre age={famille.membre3.age} name={famille.membre3.nom}  />
           <Membre age={famille.membre4.age} name={famille.membre4.nom} >
             <strong>Je supporte L'OL, snif.</strong> 
           </Membre>
-          <button onClick={this.handleClick}>Vieillir</button>
+          <Button vieillir={() => this.handleClick(2)} />
         </div>
       </Fragment>
     );
