@@ -23,7 +23,10 @@ const famille = {
 }
 
 class App extends Component {
-  state = {famille}
+  state = {
+    famille,
+    isShow : false
+  }
 
   handleClick = (addedYear) => {
     // 1- Je copie mon state pour avoir un objet famille qui reproduit mon state a l'état actuel
@@ -44,19 +47,40 @@ class App extends Component {
     this.setState({famille}); 
   }
 
+  handleShowDescription = () => {
+    const isShow = !this.state.isShow;
+    this.setState({isShow});
+  }
+
   render () {
     const {title} = this.props
-    const {famille} = this.state
+    const {famille, isShow} = this.state
+
+    let description = null;
+
+    if(isShow){
+      description = <strong>Je supporte L'OL, snif.</strong>
+    } 
+
+    const list = Object.keys(famille).map(membre => (
+      <Membre age={famille[membre].age} name={famille[membre].nom} />
+    ))
+
+
     return (
       <Fragment>
         <div className='App'>
           <h1>{title}</h1>
           <input type="text" value={famille.membre1.nom} onChange={this.handleChange}/>
-          <Membre age={famille.membre1.age} name={famille.membre1.nom} />
-          <Membre age={famille.membre2.age} name={famille.membre2.nom}  />
-          <Membre age={famille.membre3.age} name={famille.membre3.nom}  />
+          {list}
           <Membre age={famille.membre4.age} name={famille.membre4.nom} >
-            <strong>Je supporte L'OL, snif.</strong> 
+          {description}
+          <button onClick={this.handleShowDescription}>
+          {  
+              isShow ? "Cacher" : "Montrer"
+          }
+          </button>
+
           </Membre>
           <Button vieillir={() => this.handleClick(2)} />
         </div>
